@@ -38,9 +38,13 @@ public class PickActivityFragment extends Fragment {
                 Toast.makeText(getContext(), "클릭!", Toast.LENGTH_SHORT).show();
                 //TODO: 뽑기 기능 구현
                 //기본 키워드 리스트 넣기
-                //개수따라 뽑는 함수
+                //개수따라 뽑는 함수 구현
                 //뽑는 애니메이션 효과
                 //리스트 선택기능 추가
+                //리스트는 db에서 가져올 것
+                //TODO: db구현
+                //기본 넣어놓고, 추가, 수정, 삭제 기능
+                //목록 - 요소들 어떻게?
             }
         });
 

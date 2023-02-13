@@ -22,10 +22,15 @@ public class BottomBarActivity extends AppCompatActivity {
     PickActivityFragment menu1 = new PickActivityFragment();
     ListActivityFragment menu2 = new ListActivityFragment();
 
+    private DbHelper dbHelper;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_bar);
+        // DB 세팅
+        dbHelper = new DbHelper(this);
+        //dbHelper.insertData("목록1","토끼\n고양이\n시계\n여자아이");
         // 프래그먼트 세팅
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();

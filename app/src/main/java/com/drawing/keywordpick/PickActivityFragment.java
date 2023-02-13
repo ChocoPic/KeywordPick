@@ -18,20 +18,29 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PickActivityFragment extends Fragment {
     private Button BtnList;
     private TextInputLayout textInputLayout;
     AutoCompleteTextView autoCompleteTextView;
 
+    private DbHelper dbHelper;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
+        //DB 세팅
+        dbHelper = DbHelper.getInst(getContext());
+
+        //뷰 세팅
         View view = inflater.inflate(R.layout.activity_pick, container, false);
         BtnList = (Button) view.findViewById(R.id.pick_btn);
         textInputLayout = view.findViewById(R.id.listInputLayout);
         autoCompleteTextView = view.findViewById(R.id.list_text);
 
+        // 뽑기 버튼 클릭 이벤트
         BtnList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,8 +56,17 @@ public class PickActivityFragment extends Fragment {
                 //목록 - 요소들 어떻게?
             }
         });
+        // 뽑기 목록 세팅
+        dbHelper = DbHelper.getInst(getContext());
 
-        String[] items = {"1번","2번","3번","4번"};
+        // DB에서 가져와서 리사이클러뷰 리스트로 세팅
+        ArrayList<MyData> dataList = new ArrayList<>();
+        dataList = dbHelper.getAllData();
+        List<String> items = new ArrayList<>();
+        for(int i=0; i<dataList.size(); i++){
+            items.add(dataList.get(i).title);
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.list_menu_item, R.id.tv_item_menu, items);
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

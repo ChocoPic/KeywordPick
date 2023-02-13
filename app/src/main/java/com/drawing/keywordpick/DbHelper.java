@@ -102,7 +102,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 selectionArgs,          // The values for the WHERE clause
                 null,                   // don't group the rows
                 null,                   // don't filter by row groups
-                sortOrder               // The sort order
+                null              // The sort order
         );
 
         while (c.moveToNext()){

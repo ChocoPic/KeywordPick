@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,8 +26,8 @@ public class ListActivityFragment extends Fragment {
     private RecyclerAdapter recyclerAdapter;
     private LinearLayoutManager linearLayoutManager;
     private DbHelper dbHelper;
+    private Button button_add;
 
-    //TODO: 추가버튼 구현(버튼연결) / 삭제기능 구현(edit창에 삭제추가 하는게 쉬울듯)
 
     @Nullable
     @Override
@@ -56,6 +57,17 @@ public class ListActivityFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position, String itemName) {
                 clickItem(position,itemName);
+            }
+        });
+
+        //버튼 세팅
+        button_add = (Button) view.findViewById(R.id.button_add);
+        button_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), EditActivity.class);
+                intent.putExtra("title", "");  //제목전달
+                startActivity(intent);
             }
         });
 

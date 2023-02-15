@@ -1,8 +1,5 @@
 package com.drawing.keywordpick;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,18 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-//import android.widget.AdapterView;
+
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-//import com.google.android.material.textfield.TextInputLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -37,7 +31,6 @@ public class PickActivityFragment extends Fragment {
     private LinearLayout resultView;
     private DbHelper dbHelper;
     private int numTV = 0;
-    private InputMethodManager imm;
     private String title;
     private int num;
     private List<TextView> tvs;
@@ -46,10 +39,8 @@ public class PickActivityFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Button pickBtn;
-        //TextInputLayout textInputLayout;
         AutoCompleteTextView autoCompleteTextView;
         TextInputEditText numText;
-        imm = (InputMethodManager)getContext().getSystemService(INPUT_METHOD_SERVICE) ;
 
         //DB 세팅
         dbHelper = DbHelper.getInst(getContext());
@@ -57,7 +48,6 @@ public class PickActivityFragment extends Fragment {
         //뷰 세팅
         View view = inflater.inflate(R.layout.activity_pick, container, false);
         pickBtn = (Button) view.findViewById(R.id.pick_btn);
-        //textInputLayout = view.findViewById(R.id.listInputLayout);
         autoCompleteTextView = view.findViewById(R.id.list_text);
         numText = view.findViewById(R.id.num_text);
         resultView = (LinearLayout) view.findViewById(R.id.resultLayout);
@@ -108,7 +98,7 @@ public class PickActivityFragment extends Fragment {
     Animation.AnimationListener pick_aniListener = new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
-            removeTextView();            //텍스트뷰 초기화
+            removeTextView();    //텍스트뷰 초기화
         }
 
         @Override
@@ -122,19 +112,13 @@ public class PickActivityFragment extends Fragment {
                     createTextView(list.get(i), i);
                 }
             }
-            Animation anim2 = AnimationUtils.loadAnimation(getContext(),R.anim.tv_anim);
+            //텍스트뷰 애니메이션 효과
             for(int k=0; k<tvs.size(); k++){
                 tvs.get(k).setTranslationX(-700);
                 tvs.get(k).animate()
                         .translationXBy(700)
                         .setDuration(300)
                         .setStartDelay(300*k);
-                /*
-                * <translate
-        android:fromXDelta="-200%p"
-        android:toXDelta="0%p"
-        android:duration="300"
-        />*/
             }
         }
 

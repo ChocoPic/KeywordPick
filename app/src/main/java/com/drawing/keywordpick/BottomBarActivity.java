@@ -1,5 +1,6 @@
 package com.drawing.keywordpick;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -13,6 +14,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+//TODO: 예외처리, 디자인 수정
+//TODO: outline button 색 왜이래
+//TODO: 테마 전체적으로 수정할 것
+
 public class BottomBarActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     BottomNavigationView bottomNavigationView;
@@ -23,14 +28,20 @@ public class BottomBarActivity extends AppCompatActivity {
     ListActivityFragment menu2 = new ListActivityFragment();
 
     private DbHelper dbHelper;
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_bar);
+
         // DB 세팅
         dbHelper = new DbHelper(this);
-        //dbHelper.insertData("목록1","토끼\n고양이\n시계\n여자아이");
+
+        // 첫실행시
+        pref = getSharedPreferences("first",MODE_PRIVATE);
+        checkFirstRun();
+
         // 프래그먼트 세팅
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -63,6 +74,15 @@ public class BottomBarActivity extends AppCompatActivity {
                 fragmentTransaction.replace(R.id.framelayout, menu2);   //프래그먼트 교체
                 fragmentTransaction.commit();
                 break;
+        }
+    }
+
+    //첫실행 확인 함수
+    private void checkFirstRun(){
+        boolean isFirstRun = pref.getBoolean("isFirstRun", true);
+        if(isFirstRun){
+            dbHelper.insertData("목록1","토끼\n고양이\n시계\n여자아이");
+            pref.edit().putBoolean("isFirstRun",false).apply();
         }
     }
 }

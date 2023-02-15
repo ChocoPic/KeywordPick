@@ -1,11 +1,15 @@
 package com.drawing.keywordpick;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -51,38 +55,72 @@ public class EditActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     title = titleText.getText().toString();
                     content = contentText.getText().toString();
-                    dbHelper.updateData(id, title, content);
-                    finish();
+                    if(isNull(title) || isNull(content)){
+                        Toast.makeText(getApplicationContext(),"내용을 입력하세요",Toast.LENGTH_LONG).show();
+                    }else{
+                        dbHelper.updateData(id, title, content);
+                        finish();
+                    }
                 }
             });
             //삭제하기
             button_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    dbHelper.deleteData(id);
-                    finish();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this);
+                    builder.setMessage("삭제할까요?");
+                    builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dbHelper.deleteData(id);
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton("아니오",null);
+                    builder.create().show();
                 }
             });
-        }else{ /* 추가 */
+        }
+        /* 추가 */
+        else{
             //저장하기
             button_save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     title = titleText.getText().toString();
                     content = contentText.getText().toString();
-                    dbHelper.insertData(title, content);
-                    finish();
+                    if(isNull(title) || isNull(content)){
+                        Toast.makeText(getApplicationContext(),"내용을 입력하세요",Toast.LENGTH_LONG).show();
+                    }else{
+                        dbHelper.insertData(title, content);
+                        finish();
+                    }
                 }
             });
             //삭제하기
             button_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    finish();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this);
+                    builder.setMessage("삭제할까요?");
+                    builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton("아니오", null);
+                    builder.create().show();
                 }
             });
         }
-
-
     }
+    private Boolean isNull(String text){
+        if(text==null || text.length()==0 || text.replace(" ","").equals("")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

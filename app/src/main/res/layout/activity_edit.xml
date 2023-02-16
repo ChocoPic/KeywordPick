@@ -55,8 +55,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        style="@style/Widget.Material3.Button.IconButton.Outlined"
         android:id="@+id/button_delete"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:backgroundTint="@color/colorSecondary"
+        app:iconTint="@color/colorOnPrimary"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
@@ -65,7 +67,7 @@
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        app:icon="@android:drawable/ic_menu_delete"
+        app:icon="@drawable/delete_48px"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="36dp"
@@ -73,8 +75,8 @@
         app:layout_constraintEnd_toStartOf="@id/button_save" />
 
     <com.google.android.material.button.MaterialButton
-        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:id="@+id/button_save"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="28dp"
@@ -83,7 +85,7 @@
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        app:icon="@android:drawable/ic_menu_save"
+        app:icon="@drawable/save_48px"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="36dp"

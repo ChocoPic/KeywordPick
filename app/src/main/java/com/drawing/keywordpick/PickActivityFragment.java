@@ -161,7 +161,7 @@ public class PickActivityFragment extends Fragment {
     private void createTextView(String text, int id){
         TextView textView = new TextView(getContext());
         textView.setText(text);
-        textView.setTextSize(16);
+        textView.setTextSize(20);
         textView.setId(id);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
         params.bottomMargin = 16;

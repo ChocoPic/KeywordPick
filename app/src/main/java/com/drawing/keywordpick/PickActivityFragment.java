@@ -34,21 +34,21 @@ public class PickActivityFragment extends Fragment {
     private String title;
     private int num;
     private List<TextView> tvs;
+    Button pickBtn;
+    AutoCompleteTextView autoCompleteTextView;
+    TextInputEditText numText;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Button pickBtn;
-        AutoCompleteTextView autoCompleteTextView;
-        TextInputEditText numText;
+        View view = inflater.inflate(R.layout.activity_pick, container, false);
 
         //DB 세팅
         dbHelper = DbHelper.getInst(getContext());
 
         //뷰 세팅
-        View view = inflater.inflate(R.layout.activity_pick, container, false);
         pickBtn = (Button) view.findViewById(R.id.pick_btn);
-        autoCompleteTextView = view.findViewById(R.id.list_text);
+        autoCompleteTextView = (AutoCompleteTextView) view.findViewById(R.id.list_text);
         numText = view.findViewById(R.id.num_text);
         resultView = (LinearLayout) view.findViewById(R.id.resultLayout);
 
@@ -63,20 +63,20 @@ public class PickActivityFragment extends Fragment {
         ArrayList<MyData> dataList = dbHelper.getAllData();
         List<String> items = new ArrayList<>();
         for(int i=0; i<dataList.size(); i++){
-            items.add(dataList.get(i).title);
+            MyData temp_data = dataList.get(i);
+            String [] temp_content = temp_data.content.split("\n");
+            items.add(temp_data.title +" ("+ temp_content.length +")");
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.list_menu_item, R.id.tv_item_menu, items);
         autoCompleteTextView.setAdapter(adapter);
+
         tvs = new ArrayList<>();
-
-
         // 뽑기 버튼 클릭 이벤트
         pickBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //선택된 제목 리스트를 가져옵니다
-                title = autoCompleteTextView.getText().toString();
+                title = autoCompleteTextView.getText().toString().split(" ")[0];
                 //입력된 숫자를 가져옵니다
                 String n = numText.getText().toString();
                 if(isNull(title) || isNull(n) || title.isEmpty() || n.isEmpty()){
@@ -93,6 +93,60 @@ public class PickActivityFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //DB 세팅
+        dbHelper = DbHelper.getInst(getContext());
+
+        //뷰 세팅
+        pickBtn = (Button) getView().findViewById(R.id.pick_btn);
+        autoCompleteTextView = (AutoCompleteTextView) getView().findViewById(R.id.list_text);
+        numText = getView().findViewById(R.id.num_text);
+        resultView = (LinearLayout) getView().findViewById(R.id.resultLayout);
+
+        //애니메이션 세팅
+        Animation anim = AnimationUtils.loadAnimation(getContext(),R.anim.button_anim);
+        anim.setAnimationListener(pick_aniListener);
+
+        // 뽑기 목록 세팅
+        dbHelper = DbHelper.getInst(getContext());
+
+        // DB에서 가져와서 리사이클러뷰 리스트로 세팅
+        ArrayList<MyData> dataList = dbHelper.getAllData();
+        List<String> items = new ArrayList<>();
+        for(int i=0; i<dataList.size(); i++){
+            MyData temp_data = dataList.get(i);
+            String [] temp_content = temp_data.content.split("\n");
+            items.add(temp_data.title +" ("+ temp_content.length +")");
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.list_menu_item, R.id.tv_item_menu, items);
+        autoCompleteTextView.setAdapter(adapter);
+
+        tvs = new ArrayList<>();
+        // 뽑기 버튼 클릭 이벤트
+        pickBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //선택된 제목 리스트를 가져옵니다
+                title = autoCompleteTextView.getText().toString().split(" ")[0];
+                //입력된 숫자를 가져옵니다
+                String n = numText.getText().toString();
+                if(isNull(title) || isNull(n) || title.isEmpty() || n.isEmpty()){
+                    Toast.makeText(getContext(), "빈칸이 있어요", Toast.LENGTH_SHORT).show();
+                }else {
+                    num = Integer.parseInt(n);
+                    if (num < 1 || num > 10) {
+                        Toast.makeText(getContext(), "1~10개까지 가능해요", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //뽑기 버튼에 애니메이션 효과
+                        pickBtn.startAnimation(anim);
+                    }
+                }
+            }
+        });
     }
 
     Animation.AnimationListener pick_aniListener = new Animation.AnimationListener() {
@@ -130,20 +184,25 @@ public class PickActivityFragment extends Fragment {
     /** 뽑기 함수 **/
     private List<String> randomList(String title, int num){
         List<String> resultList = new ArrayList<>();
+        String[] myTotalList;
 
         //선택된 뽑기 리스트를 DB에서 가져옵니다
         List<MyData> list = dbHelper.getData(title);    //해당 목록의 자르기 전 내용
-        String[] myTotalList = list.get(0).content.split("\n");    //해당 목록의 자른 후 내용
-
+        if(list.size() == 0){
+            Toast.makeText(getContext(), "목록을 가져오는 데 실패했습니다!", Toast.LENGTH_LONG).show();
+            return resultList;
+        }else{
+            myTotalList = list.get(0).content.split("\n");    //해당 목록의 자른 후 내용
+        }
         if(myTotalList.length<num){ //뽑는 개수가 옳지 않은 경우
             return resultList;
         }
+
         //랜덤으로 중복없게 개수만큼 하나씩 뽑아서 띄웁니다
         Random rand = new Random();
         int resultIntList[] = new int[10];        //최대 10개까지 뽑을 수 있음
         for(int i=0; i<num; i++){
             resultIntList[i] = rand.nextInt(myTotalList.length);
-            Log.d("뽑음1",resultIntList[i]+"");
             for(int j=0; j<i; j++){ //중복제거
                 if(resultIntList[i] == resultIntList[j]){
                     i--;
@@ -151,7 +210,7 @@ public class PickActivityFragment extends Fragment {
             }
         }
         for(int i=0; i<num; i++){
-            Log.d("뽑음2",resultIntList[i]+"");
+            Log.d("뽑음",resultIntList[i]+"");
             resultList.add(myTotalList[resultIntList[i]]);
         }
         return resultList;

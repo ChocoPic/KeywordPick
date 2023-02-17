@@ -18,7 +18,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="52dp"
         android:layout_marginBottom="32dp"
         android:hint="뽑기 목록을 선택하세요"
         app:layout_constraintBottom_toTopOf="@id/textInputLayout"
@@ -56,16 +56,18 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/pick_btn"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
-        android:backgroundTint="@color/colorPrimaryVariant"
-        app:iconTint="@color/colorSecondaryVariant"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginBottom="60dp"
+        android:background="@drawable/round_button"
+        android:backgroundTint="@color/colorPrimaryVariant"
         app:icon="@drawable/play_arrow_48px"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
         app:iconSize="40dp"
+        app:iconTint="@color/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +88,7 @@
         <LinearLayout
             android:id="@+id/resultLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
 

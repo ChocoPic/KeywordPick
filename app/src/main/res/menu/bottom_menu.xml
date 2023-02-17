@@ -6,11 +6,11 @@
         android:enabled="true"
         android:icon="@drawable/play_arrow_48px"
         android:title="뽑기"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu2"
         android:enabled="true"
         android:icon="@drawable/menu_48px"
         android:title="목록"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 </menu>

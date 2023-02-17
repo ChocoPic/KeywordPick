@@ -11,7 +11,9 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
         android:hint="제목을 입력하세요"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +36,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
+        android:layout_margin="28dp"
         android:hint="키워드를 입력하세요"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,41 +56,34 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/button_delete"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:backgroundTint="@color/colorSecondary"
-        app:iconTint="@color/colorOnPrimary"
+        android:background="@drawable/round_button_light"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="28dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
+        android:layout_marginBottom="36dp"
         app:icon="@drawable/delete_48px"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="36dp"
+        app:iconTint="@color/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/button_save" />
+        app:layout_constraintEnd_toStartOf="@id/button_save"
+        />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/button_save"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:background="@drawable/round_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="28dp"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="36dp"
         app:icon="@drawable/save_48px"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="36dp"
+        app:iconTint="@color/colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

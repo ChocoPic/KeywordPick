@@ -1,19 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.KeywordPick" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.KeywordPick"
+        parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/material_dynamic_secondary40</item>
-        <item name="colorPrimaryVariant">@color/material_dynamic_secondary20</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#BAE8E8</item>
-        <item name="colorSecondaryVariant">#E3F6F5</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorSecondary</item>
+        <item name="android:statusBarColor">@color/colorSecondary</item>
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
-        <item name="backgroundColor">?attr/colorOnPrimary</item>
+        <item name="windowActionBar">false</item>
     </style>
-
 </resources>

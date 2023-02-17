@@ -25,9 +25,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".PickActivityFragment" />
-        <activity android:name=".ListActivityFragment"/>
-        <activity android:name=".EditActivity"/>
+        <activity android:name=".EditActivity" />
     </application>
 
 </manifest>

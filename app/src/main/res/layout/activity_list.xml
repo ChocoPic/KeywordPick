@@ -7,14 +7,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_weight="1"
-    android:background="@color/design_default_color_background">
+    android:background="?attr/android:colorBackground">
 
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="68dp"
-        android:background="@color/colorSecondary"
+        android:background="?attr/colorSecondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +45,7 @@
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="36dp"
-        app:iconTint="@color/colorOnPrimary"
+        app:iconTint="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

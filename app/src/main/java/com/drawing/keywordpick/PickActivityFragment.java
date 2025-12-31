@@ -20,6 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -37,6 +43,17 @@ public class PickActivityFragment extends Fragment {
     Button pickBtn;
     AutoCompleteTextView autoCompleteTextView;
     TextInputEditText numText;
+
+    private InterstitialAd mInterstitialAd; //전면광고
+    private int clickCount = 0; //n 번되면 전면 광고 표시
+    private final int CLICKCOUNT = 3;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //전면 광고 로드
+        loadAd();
+    }
 
     @Nullable
     @Override
@@ -86,6 +103,13 @@ public class PickActivityFragment extends Fragment {
                     if (num < 1 || num > 10) {
                         Toast.makeText(getContext(), "1~10개까지 가능해요", Toast.LENGTH_SHORT).show();
                     } else {
+                        //전면 광고 표시
+                        clickCount++;
+                        if (clickCount >= CLICKCOUNT && mInterstitialAd != null) {
+                            mInterstitialAd.show(requireActivity());
+                            clickCount = 0;
+                        }
+
                         //뽑기 버튼에 애니메이션 효과
                         pickBtn.startAnimation(anim);
                     }
@@ -141,6 +165,17 @@ public class PickActivityFragment extends Fragment {
                     if (num < 1 || num > 10) {
                         Toast.makeText(getContext(), "1~10개까지 가능해요", Toast.LENGTH_SHORT).show();
                     } else {
+                        //전면 광고 표시
+                        clickCount++;
+                        if (clickCount == CLICKCOUNT) {
+                            clickCount = 0;
+                            if (mInterstitialAd != null) {
+                                mInterstitialAd.show(requireActivity());
+                                loadAd();   //광고 본 후 다시 로드
+                            } else {
+                                loadAd();   // 광고가 로드되지 않은 경우 다시 로드
+                            }
+                        }
                         //뽑기 버튼에 애니메이션 효과
                         pickBtn.startAnimation(anim);
                     }
@@ -159,7 +194,7 @@ public class PickActivityFragment extends Fragment {
         public void onAnimationEnd(Animation animation) {
             //중복없이 랜덤으로 뽑힌 리스트를 가져옵니다
             List<String> list = randomList(title, num);
-            if (list.size() < 1) {
+            if (list.isEmpty()) {
                 Toast.makeText(getContext(), "뽑을 후보가 너무 적어요", Toast.LENGTH_SHORT).show();
             } else {
                 for (int i = 0; i < list.size(); i++) {
@@ -172,7 +207,7 @@ public class PickActivityFragment extends Fragment {
                 tvs.get(k).animate()
                         .translationXBy(700)
                         .setDuration(300)
-                        .setStartDelay(300*k);
+                        .setStartDelay(300L *k);
             }
         }
 
@@ -188,7 +223,7 @@ public class PickActivityFragment extends Fragment {
 
         //선택된 뽑기 리스트를 DB에서 가져옵니다
         List<MyData> list = dbHelper.getData(title);    //해당 목록의 자르기 전 내용
-        if(list.size() == 0){
+        if(list.isEmpty()){
             Toast.makeText(getContext(), "목록을 가져오는 데 실패했습니다!", Toast.LENGTH_LONG).show();
             return resultList;
         }else{
@@ -200,7 +235,7 @@ public class PickActivityFragment extends Fragment {
 
         //랜덤으로 중복없게 개수만큼 하나씩 뽑아서 띄웁니다
         Random rand = new Random();
-        int resultIntList[] = new int[10];        //최대 10개까지 뽑을 수 있음
+        int[] resultIntList = new int[10];        //최대 10개까지 뽑을 수 있음
         for(int i=0; i<num; i++){
             resultIntList[i] = rand.nextInt(myTotalList.length);
             for(int j=0; j<i; j++){ //중복제거
@@ -244,10 +279,47 @@ public class PickActivityFragment extends Fragment {
         }
     }
     private Boolean isNull(String text){
-        if(text==null || text.length()==0 || text.replace(" ","").equals("")){
+        if(text==null || text.isEmpty() || text.replace(" ", "").isEmpty()){
             return true;
         }else{
             return false;
         }
     }
+
+    private void loadAd() {
+        InterstitialAd.load(
+                requireActivity(),
+                "ca-app-pub-9932148089014412/8125668266",
+                new AdRequest.Builder().build(),
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        mInterstitialAd = interstitialAd;
+
+                        mInterstitialAd.setFullScreenContentCallback(
+                            new FullScreenContentCallback() {
+                                @Override
+                                public void onAdDismissedFullScreenContent() {
+                                    mInterstitialAd = null;
+                                    loadAd(); // 다음 광고 미리 준비
+                                }
+
+                                @Override
+                                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                    mInterstitialAd = null;
+                                    loadAd();
+                                }
+                            }
+                        );
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        mInterstitialAd = null;
+                    }
+                });
+
+    }
+
+
 }

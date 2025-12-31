@@ -4,20 +4,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-//TODO: 예외처리, 디자인 수정
-//TODO: outline button 색 왜이래
-//TODO: 테마 전체적으로 수정할 것
 
 public class BottomBarActivity extends AppCompatActivity {
     FrameLayout frameLayout;
@@ -30,11 +28,21 @@ public class BottomBarActivity extends AppCompatActivity {
 
     private DbHelper dbHelper;
     private SharedPreferences pref;
+    private LinearLayout adContainerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_bar);
+
+        // 광고 초기화
+        new Thread(
+                () -> {
+                    // Initialize the Google Mobile Ads SDK on a background thread.
+                    MobileAds.initialize(this, initializationStatus -> {});
+                })
+                .start();
+
 
         // DB 세팅
         dbHelper = new DbHelper(this);
@@ -82,6 +90,8 @@ public class BottomBarActivity extends AppCompatActivity {
     private void checkFirstRun(){
         boolean isFirstRun = pref.getBoolean("isFirstRun", true);
         if(isFirstRun){
+            dbHelper.insertData("감정", "기쁨\n"+"슬픔\n"+"신남\n"+"행복\n"+"두려움\n"+"절망적임\n"+"역겨움\n"+"무감정\n"+"우울함\n"+"정신없음\n"+"열받음\n"+"짜증남\n"+"끔찍함\n"+"외로움\n"+"그리움\n"+"귀여움\n"+"설렘\n");
+            dbHelper.insertData("장소", "학교\n"+"집\n"+"병원\n"+"공원\n"+"산\n"+"바다\n"+"계곡\n"+"공터\n"+"폐허\n"+"성\n"+"버스\n"+"지하철\n"+"노래방\n"+"오락실\n"+"피씨방\n"+"놀이공원\n"+"작업실\n"+"사무실\n"+"화장실\n"+"우주\n"+"하늘\n"+"외계\n");
             dbHelper.insertData("기본목록","TV\n" +
                     "간호사\n" +
                     "갈매기\n" +

@@ -25,8 +25,7 @@
         app:layout_constraintBottom_toTopOf="@id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed">
+        app:layout_constraintTop_toTopOf="parent">
 
         <AutoCompleteTextView
             android:id="@+id/list_text"
@@ -43,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:hint="개수를 입력하세요(1~10)"
-        app:layout_constraintBottom_toTopOf="@id/pick_btn"
+        app:layout_constraintBottom_toTopOf="@id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/listInputLayout">
@@ -57,34 +56,18 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <Button
-        android:id="@+id/pick_btn"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/round_button"
-        android:backgroundTint="@color/colorPrimaryDark"
-        app:icon="@drawable/play_arrow_48px"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"
-        app:iconSize="40dp"
-        app:iconTint="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@id/scrollView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textInputLayout" />
-
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
         android:fadeScrollbars="false"
         android:gravity="center"
         android:overScrollMode="ifContentScrolls"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/pick_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pick_btn">
+        app:layout_constraintTop_toBottomOf="@id/textInputLayout">
 
         <LinearLayout
             android:id="@+id/resultLayout"
@@ -95,5 +78,20 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/pick_btn"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/round_button"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:icon="@drawable/play_arrow_48px"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="40dp"
+        app:iconTint="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
